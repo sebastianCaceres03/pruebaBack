@@ -1,6 +1,6 @@
 const { generarToken } = require('../../../services/jwt');
 const pool = require('../../../config/database');
-const { validarPassword, obtenerUsuario } = require('../accions/userAccions');
+const { validarPassword, obtenerUsuario } = require('../accions/loginAccions');
 
 exports.login = async (req, res, next) => {
     try {
@@ -9,16 +9,15 @@ exports.login = async (req, res, next) => {
         console.log(consulta);
         console.log(req.body);
         if (consulta.length > 0) {
-            console.log('llega aca');
             const validar = await validarUser(consulta[0].password, req.body.password);
             if (validar) {
-                const user = await obtenerUsuario(consulta[0].idProfesor);
+                const user = await obtenerUsuario(consulta[0].id);
                 const token = await generarToken(user)
+                console.log(user)
                 res.json({
                     mensaje: 'Autenticación correcta',
                     token: token,
                     user : user,
-                    type:'docente'
                 });
             } else {
                 next();

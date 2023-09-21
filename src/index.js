@@ -20,12 +20,17 @@ app.use(multer().any())
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-//var rurasMiddelware = require('./middleware/loginMiddleware');
+var rurasMiddelware = require('./middleware/loginMiddleware');
 
 
 //Login
 app.use('/api/login', require('./app/Login/routes/login'));
-
+//register
+app.use('/api/register', require('./app/register/routes/register'));
+//user
+app.use('/api/user', rurasMiddelware, require('./app/users/routes/user'));
+//task
+app.use('/api/task', rurasMiddelware, require('./app/task/routes/task'));
 
 //routes docente
 //app.use('/api/docente', rurasMiddelware, require('./app/Docente/routes/docente_route'));
